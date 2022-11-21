@@ -1,5 +1,7 @@
 package com.ruoyi.web.handler;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ruoyi.common.core.domain.R;
 import io.swagger.annotations.ApiModelProperty;
 import io.vertx.core.json.JsonObject;
@@ -30,6 +32,52 @@ public class WebHandler{
     }
 
     public void getUser(RoutingContext routingContext){
+        String userIdParam = routingContext.request().getParam("userId");
+        if (StrUtil.isBlank(userIdParam)) {
+            Integer userId = Integer.valueOf(userIdParam);
+            if (!users.isEmpty() && users.containsKey(userId)) {
+                routingContext.response().end(JsonObject.mapFrom(R.ok(users.get(userId))).toBuffer());
+            } else {
+                routingContext.response().end("用户不存在");
+            }
+        } else {
+            routingContext.response().end(JsonObject.mapFrom(R.fail("参数不存在")).toBuffer());
+        }
+    }
+
+    public void save(RoutingContext routingContext){
+        UserEntity user = routingContext.body().asPojo(UserEntity.class);
+        if (ObjectUtil.isNull(user) || ObjectUtil.isNull(user.getUserId())) {
+            routingContext.response().end(JsonObject.mapFrom(R.fail("用户ID不能为空")).toBuffer());
+        } else {
+            users.put(user.getUserId(), user);
+            routingContext.response().end(JsonObject.mapFrom(R.ok()).toBuffer());
+        }
+    }
+
+    public void update(RoutingContext routingContext){
+        UserEntity user = routingContext.body().asPojo(UserEntity.class);
+        if (ObjectUtil.isNull(user) || ObjectUtil.isNull(user.getUserId())) {
+            routingContext.response().end(JsonObject.mapFrom(R.fail("用户ID不能为空")).toBuffer());
+        }
+        if (users.isEmpty() || !users.containsKey(user.getUserId())) {
+            routingContext.response().end(JsonObject.mapFrom(R.fail("用户不存在")).toBuffer());
+        } else {
+            users.remove(user.getUserId());
+            users.put(user.getUserId(), user);
+            routingContext.response().end(JsonObject.mapFrom(R.ok()).toBuffer());
+        }
+    }
+
+    public void delete(RoutingContext routingContext){
+        String userIdParam = routingContext.request().getParam("userId");
+        if (StrUtil.isBlank(userIdParam)) {
+            Integer userId = Integer.valueOf(userIdParam);
+            users.remove(userId);
+            routingContext.response().end(JsonObject.mapFrom(R.ok()).toBuffer());
+        } else {
+            routingContext.response().end(JsonObject.mapFrom(R.fail("参数不存在")).toBuffer());
+        }
     }
 
 
