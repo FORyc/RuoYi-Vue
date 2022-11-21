@@ -1,6 +1,7 @@
 package com.ruoyi.vertx.listener;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
@@ -34,8 +35,13 @@ public class VertxSpringContextListener {
         Map<String, AbstractVerticle> verticleMap = SpringUtil.getBeansOfType(AbstractVerticle.class);
         if (CollectionUtil.isNotEmpty(verticleMap)) {
             for (Map.Entry<String, AbstractVerticle> entry : verticleMap.entrySet()) {
-                vertx.deployVerticle(entry.getValue());
+                try {
+                    vertx.deployVerticle(entry.getValue());
+                } catch (Exception e){
+                    logger.warn(StrUtil.format("[{}]部署失败，msg = {}", entry.getValue(), e));
+                }
             }
+            logger.info("------verticle 部署完成-----");
         } else {
             logger.warn("未找到spring管理的verticle, vertx关闭...");
             vertx.close();
