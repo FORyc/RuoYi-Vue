@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-vertx</artifactId>
-            <version>6.2.1.Final</version>
+            <version>${resteasy.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
