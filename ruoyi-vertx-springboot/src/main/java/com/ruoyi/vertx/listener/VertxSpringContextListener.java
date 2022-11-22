@@ -36,7 +36,13 @@ public class VertxSpringContextListener {
         if (CollectionUtil.isNotEmpty(verticleMap)) {
             for (Map.Entry<String, AbstractVerticle> entry : verticleMap.entrySet()) {
                 try {
-                    vertx.deployVerticle(entry.getValue());
+                    vertx.deployVerticle(entry.getValue(), handler ->{
+                        if (handler.succeeded()) {
+                            logger.info("verticle[" + entry.getKey() + "] deployed");
+                        } else {
+                            logger.error("verticle[" + entry.getKey() + "] failed, message:" + handler.cause());
+                        }
+                    });
                 } catch (Exception e){
                     logger.warn(StrUtil.format("[{}]部署失败，msg = {}", entry.getValue(), e));
                 }
