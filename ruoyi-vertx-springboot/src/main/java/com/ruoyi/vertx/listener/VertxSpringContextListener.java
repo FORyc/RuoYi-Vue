@@ -40,7 +40,8 @@ public class VertxSpringContextListener {
                         if (handler.succeeded()) {
                             logger.info("verticle[" + entry.getKey() + "] deployed");
                         } else {
-                            logger.error("verticle[" + entry.getKey() + "] failed, message:" + handler.cause());
+                            logger.error(StrUtil.format("error deploying {}", handler.cause()), handler.cause());
+                            logger.error("verticle[" + entry.getKey() + "] failed, message:" + handler.cause().fillInStackTrace());
                         }
                     });
                 } catch (Exception e){

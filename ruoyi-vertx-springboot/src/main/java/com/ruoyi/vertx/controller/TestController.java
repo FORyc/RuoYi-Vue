@@ -1,17 +1,13 @@
 package com.ruoyi.vertx.controller;
 
-import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpServerRequest;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.Context;
-
-/**
- * 这里的javax包，在macos的openJDK11上
- */
 @Path(value = "/test")
 public class TestController {
 
@@ -19,10 +15,9 @@ public class TestController {
 
     @GET
     @Path(value = "/get")
-//    @Produces(value = MediaType.APPLICATION_JSON)
-    public String testGet(@Suspended AsyncResponse asyncResponse,
-                          @Context Vertx vertx,
-                          String name){
+    @Produces(value = {MediaType.APPLICATION_JSON})
+    public String testGet(@Context HttpServerRequest request){
+        String name = request.getParam("name");
         logger.info("name:" + name);
         if(name != null){
             logger.info("namespace");
