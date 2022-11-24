@@ -1,19 +1,22 @@
 package com.ruoyi.web.controller.tool;
 
-import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.vertx.base.common.BaseRestEasyController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,33 +33,33 @@ import java.util.Map;
 @Api("用户信息管理")
 @RestController
 //@RequestMapping("/test/user")
-public class TestController extends BaseController
-{
+@Path(value = "/test/user")
+@Produces(value = {MediaType.APPLICATION_JSON})
+public class TestController extends BaseRestEasyController {
+
     private final static Map<Integer, UserEntity> users = new LinkedHashMap<Integer, UserEntity>();
+
     {
         users.put(1, new UserEntity(1, "admin", "admin123", "15888888888"));
         users.put(2, new UserEntity(2, "ry", "admin123", "15666666666"));
     }
 
     @ApiOperation("获取用户列表")
-    @GetMapping("/list")
-    public R<List<UserEntity>> userList()
-    {
+    @GET
+    @Path("/list")
+    public R<List<UserEntity>> userList() {
         List<UserEntity> userList = new ArrayList<UserEntity>(users.values());
         return R.ok(userList);
     }
 
     @ApiOperation("获取用户详细")
     @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
-    @GetMapping("/{userId}")
-    public R<UserEntity> getUser(@PathVariable Integer userId)
-    {
-        if (!users.isEmpty() && users.containsKey(userId))
-        {
+    @GET
+    @Path("/{userId}")
+    public R<UserEntity> getUser(@PathParam("userId") Integer userId) {
+        if (!users.isEmpty() && users.containsKey(userId)){
             return R.ok(users.get(userId));
-        }
-        else
-        {
+        } else {
             return R.fail("用户不存在");
         }
     }
@@ -68,7 +71,8 @@ public class TestController extends BaseController
         @ApiImplicitParam(name = "password", value = "用户密码", dataType = "String", dataTypeClass = String.class),
         @ApiImplicitParam(name = "mobile", value = "用户手机", dataType = "String", dataTypeClass = String.class)
     })
-    @PostMapping("/save")
+    @POST
+    @Path("/save")
     public R<String> save(UserEntity user)
     {
         if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId()))
@@ -80,7 +84,8 @@ public class TestController extends BaseController
     }
 
     @ApiOperation("更新用户")
-    @PutMapping("/update")
+    @PUT
+    @Path("/update")
     public R<String> update(@RequestBody UserEntity user)
     {
         if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId()))
@@ -98,8 +103,9 @@ public class TestController extends BaseController
 
     @ApiOperation("删除用户信息")
     @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path", dataTypeClass = Integer.class)
-    @DeleteMapping("/{userId}")
-    public R<String> delete(@PathVariable Integer userId)
+    @DELETE
+    @Path("/{userId}")
+    public R<String> delete(@PathParam("userId") Integer userId)
     {
         if (!users.isEmpty() && users.containsKey(userId))
         {
