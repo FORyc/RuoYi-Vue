@@ -3,7 +3,9 @@ package com.ruoyi.vertx.listener;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.ruoyi.vertx.base.constant.VerticleName;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import org.apache.log4j.Logger;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -36,14 +38,25 @@ public class VertxSpringContextListener {
         if (CollectionUtil.isNotEmpty(verticleMap)) {
             for (Map.Entry<String, AbstractVerticle> entry : verticleMap.entrySet()) {
                 try {
-                    vertx.deployVerticle(entry.getValue(), handler ->{
-                        if (handler.succeeded()) {
-                            logger.info("verticle[" + entry.getKey() + "] deployed");
-                        } else {
-                            logger.error(StrUtil.format("error deploying {}", handler.cause()), handler.cause());
-                            logger.error("verticle[" + entry.getKey() + "] failed, message:" + handler.cause().fillInStackTrace());
-                        }
-                    });
+                    if (entry.getKey().equals(VerticleName.WORK_VERTICLE)) {
+                        DeploymentOptions deploymentOptions = new DeploymentOptions();
+                        deploymentOptions.setWorker(true);
+                        vertx.deployVerticle(entry.getValue(), deploymentOptions, handler -> {
+                            if (handler.succeeded()) {
+                                logger.info("verticle[" + entry.getKey() + "] deployed");
+                            } else {
+                                logger.error(StrUtil.format("error deploying {}", handler.cause()), handler.cause());
+                            }
+                        });
+                    } else {
+                        vertx.deployVerticle(entry.getValue(), handler ->{
+                            if (handler.succeeded()) {
+                                logger.info("verticle[" + entry.getKey() + "] deployed");
+                            } else {
+                                logger.error(StrUtil.format("error deploying {}", handler.cause()), handler.cause());
+                            }
+                        });
+                    }
                 } catch (Exception e){
                     logger.warn(StrUtil.format("[{}]部署失败，msg = {}", entry.getValue(), e));
                 }
