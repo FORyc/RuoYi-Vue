@@ -1,5 +1,6 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.framework.config.properties.PermitAllUrlProperties;
 import com.ruoyi.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.ruoyi.framework.security.handle.AuthenticationEntryPointImpl;
 import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
@@ -60,8 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     /**
      * 允许匿名访问的地址
      */
-//    @Autowired
-//    private PermitAllUrlProperties permitAllUrl;
+    @Autowired
+    private PermitAllUrlProperties permitAllUrl;
 
     /**
      * 解决 无法直接注入 AuthenticationManager
@@ -96,7 +97,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     {
         // 注解标记允许匿名访问的url
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity.authorizeRequests();
-//        permitAllUrl.getUrls().forEach(url -> registry.antMatchers(url).permitAll());
+        permitAllUrl.getUrls().forEach(url -> registry.antMatchers(url).permitAll());
 
         httpSecurity
                 // CSRF禁用，因为不使用session
