@@ -20,7 +20,7 @@ import java.util.Map;
  * 这个webVerticle的作用就是将resteasy管控的controller注册到相关的deployment
  *
  */
-@Component(value = VerticleName.WEB_VERTICLE)
+//@Component(value = VerticleName.WEB_VERTICLE)
 public class WebVerticle extends AbstractVerticle {
 
     private final Logger logger = Logger.getLogger(WebVerticle.class);
