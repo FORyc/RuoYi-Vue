@@ -1,15 +1,13 @@
-package com.ruoyi.framework.verticle;
+package com.ruoyi.vertx.verticle;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.ruoyi.vertx.base.common.BaseRestEasyController;
-import com.ruoyi.vertx.base.constant.VerticleName;
 import io.vertx.core.AbstractVerticle;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.plugins.server.vertx.VertxRegistry;
 import org.jboss.resteasy.plugins.server.vertx.VertxRequestHandler;
 import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
