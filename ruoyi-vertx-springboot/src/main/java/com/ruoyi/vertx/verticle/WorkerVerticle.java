@@ -1,9 +1,11 @@
 package com.ruoyi.vertx.verticle;
 
+import com.ruoyi.vertx.base.annotation.Verticle;
+import com.ruoyi.vertx.base.constant.VerticleName;
 import io.vertx.core.AbstractVerticle;
 import org.apache.log4j.Logger;
 
-//@Component(value = VerticleName.WORK_VERTICLE)
+@Verticle(value = VerticleName.WORK_VERTICLE)
 public class WorkerVerticle  extends AbstractVerticle {
 
     private final Logger logger = Logger.getLogger(WorkerVerticle.class);

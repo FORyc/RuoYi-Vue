@@ -2,7 +2,9 @@ package com.ruoyi.vertx.verticle;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.ruoyi.vertx.base.annotation.Verticle;
 import com.ruoyi.vertx.base.common.BaseRestEasyController;
+import com.ruoyi.vertx.base.constant.VerticleName;
 import io.vertx.core.AbstractVerticle;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.plugins.server.vertx.VertxRegistry;
@@ -18,7 +20,7 @@ import java.util.Map;
  * 这个webVerticle的作用就是将resteasy管控的controller注册到相关的deployment
  *
  */
-//@Component(value = VerticleName.WEB_VERTICLE)
+@Verticle(value = VerticleName.WEB_VERTICLE)
 public class WebVerticle extends AbstractVerticle {
 
     private final Logger logger = Logger.getLogger(WebVerticle.class);

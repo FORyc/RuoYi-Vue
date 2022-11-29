@@ -12,6 +12,16 @@ public class VerticleName {
      */
     public static final String WORK_VERTICLE = "WORK_VERTICLE";
 
+    /**
+     *  redis verticle
+     */
+    public static final String REDIS_VERTICLE = "REDIS_VERTICLE";
+
+    /**
+     * db verticle
+     */
+    public static final String DB_VERTICLE = "DB_VERTICLE";
+
 
 
 }

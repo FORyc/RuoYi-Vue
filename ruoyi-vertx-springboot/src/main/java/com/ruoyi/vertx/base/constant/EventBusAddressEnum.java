@@ -4,7 +4,9 @@ package com.ruoyi.vertx.base.constant;
  * event bus 地址枚举
  */
 public enum EventBusAddressEnum {
-    WORK("Work:"),
+    WORK("Work."),
+    REDIS("Redis."),
+    DB("DB."),
     ;
 
     /**

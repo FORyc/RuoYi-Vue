@@ -10,12 +10,11 @@ import jakarta.ws.rs.container.Suspended;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 /**
  * 新增的restController需要继承BaseRestEasyController，且加入Spring的管理
  */
-@Component
+//@Component
 @Path(value = "/test")
 public class TestController extends BaseRestEasyController {
 
