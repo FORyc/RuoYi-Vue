@@ -46,17 +46,17 @@ public class VertxSpringContextListener {
                             deploymentOptions.setWorker(true);
                             vertx.deployVerticle(verticle, deploymentOptions, handler -> {
                                 if (handler.succeeded()) {
-                                    logger.info("verticle[" + entry.getKey() + "] deployed");
+                                    logger.info(StrUtil.format("verticle[{}] deployed", entry.getKey()));
                                 } else {
-                                    logger.error(StrUtil.format("error deploying {}", handler.cause()), handler.cause());
+                                    logger.error(StrUtil.format("error deploying {}", entry.getKey()), handler.cause());
                                 }
                             });
                         } else {
                             vertx.deployVerticle(verticle, handler ->{
                                 if (handler.succeeded()) {
-                                    logger.info("verticle[" + entry.getKey() + "] deployed");
+                                    logger.info(StrUtil.format("verticle[{}] deployed", entry.getKey()));
                                 } else {
-                                    logger.error(StrUtil.format("error deploying {}", handler.cause()), handler.cause());
+                                    logger.error(StrUtil.format("error deploying {}", entry.getKey()), handler.cause());
                                 }
                             });
                         }

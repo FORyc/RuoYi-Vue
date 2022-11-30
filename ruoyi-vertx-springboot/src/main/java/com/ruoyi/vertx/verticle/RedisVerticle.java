@@ -24,11 +24,8 @@ public class RedisVerticle extends AbstractVerticle {
         // Create the redis client
         Redis client = Redis.createClient(vertx, new RedisOptions().addConnectionString(host));
         client.connect()
-                .onFailure(handler -> {
-                    logger.error("Failed to connect redis", handler);
-                    vertx.close();
-                    System.exit(1);
-                }).onSuccess(handler -> logger.info("redis connection established"));
+                .onFailure(handler -> logger.error("Failed to connect redis", handler))
+                .onSuccess(handler -> logger.info("redis connection established"));
         RedisAPI redis = RedisAPI.api(client);
         vertx.eventBus().consumer(EventBusAddressEnum.REDIS.value().concat("*"), handler -> {
             // TODO 判断redis操作
